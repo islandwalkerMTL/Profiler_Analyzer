@@ -48,7 +48,7 @@ def extractArcFrame(filename,frameNum):
 			
 			
 			return AB_Frame, GT_Frame
-	
+#This functions analyzes
 def analyzeArc(filename,referencefilename):
 	[AB_refDist, AB_refData, GT_refDist, GT_refData, ABflatness_ref, ABsymmetry_ref, GTflatness_ref, GTsymmetry_ref] = load_profilerFile(referencefilename) # for testing purposes only!!!!
 	#print 'avgABError(%) ' +  'avgGTError(%) ' + 'ABmax ' + 'GTmax '
@@ -92,7 +92,7 @@ def analyzeArc(filename,referencefilename):
 	[averageABError_neg90, averageGTError_neg90, ABmax_neg90, GTmax_neg90] = computeError(AB_Frame_neg90, GT_Frame_neg90, AB_refData,GT_refData )
 	[averageABError_0, averageGTError_0, ABmax_0, GTmax_0] = computeError(AB_Frame_0, GT_Frame_0, AB_refData,GT_refData )
 	[averageABError_90, averageGTError_90, ABmax_90, GTmax_90] = computeError(AB_Frame_90, GT_Frame_90, AB_refData,GT_refData )
-	[averageABError_180, averageGTError_180, ABmax_180, GTmax_180] = computeError(AB_Frame_180, GT_Frame_180 AB_refData,GT_refData )
+	[averageABError_180, averageGTError_180, ABmax_180, GTmax_180] = computeError(AB_Frame_180, GT_Frame_180, AB_refData,GT_refData )
 	
 	return overallAvgAB, overallAvgGT, overallABmaximum, overallGTmaximum, averageABError_neg180, averageGTError_neg180, ABmax_neg180, GTmax_neg180, averageABError_neg90, averageGTError_neg90, ABmax_neg90, GTmax_neg90, averageABError_0, averageGTError_0, ABmax_0, GTmax_0,averageABError_90, averageGTError_90, ABmax_90, GTmax_90, averageABError_180, averageGTError_180, ABmax_180, GTmax_180
 
@@ -194,10 +194,7 @@ def computeError(ABdata,GTdata, AB_refData, GT_refData):
 	
 
 def analyzeStatic(fname, ref_file):
-	
-	#Select the reference file
-	#uncomment the room and energy combo for the given test.
-    
+	   
 
 
     #Load the reference file and file to be analyzed 
@@ -215,12 +212,15 @@ def analyzeStatic(fname, ref_file):
 
 
 
-
+#Create a python dictionary with the results from the analysis function to populate qatrack results.
+profiler_results = dict()
 
 #### QATrack integration begins here ####
 	
-#To test QA track implementation use this in the file upload composite test calculation box.
-# profiler_results = dict()
+#To test QA track implementation use this in the file upload composite test calculation box. Just uncomment the necessary lines
+
+
+#For static
 # profiler_results['symAB'] = float(100)
 # profiler_results['homAB'] = float(101)
 # profiler_results['symGT'] = float(102)
@@ -230,6 +230,40 @@ def analyzeStatic(fname, ref_file):
 # profiler_results['meanAB'] = float(106)
 # profiler_results['meanGT'] = float(107)
 # result = profiler_results
+
+#For Arc
+# profiler_results['overallAvgAB'] =1
+# profiler_results['overallAvgGT'] =2
+# profiler_results['overallABmaximum'] =3
+# profiler_results['overallGTmaximum'] =4
+# profiler_results['averageABError_neg180']=5
+# profiler_results['averageGTError_neg180']=6
+# profiler_results['ABmax_neg180']=7
+# profiler_results['GTmax_neg180']=8
+# profiler_results['averageABError_neg90']=9
+# profiler_results['averageGTError_neg90']=10
+# profiler_results['ABmax_neg90']=11
+# profiler_results['GTmax_neg90']=12
+# profiler_results['averageABError_0']=13
+# profiler_results['averageGTError_0']=14
+# profiler_results['ABmax_0']=15
+# profiler_results['GTmax_0']=16
+# profiler_results['averageABError_90']=17
+# profiler_results['averageGTError_90']=18
+# profiler_results['ABmax_90']=19
+# profiler_results['GTmax_90']=20
+# profiler_results['averageABError_180']=21
+# profiler_results['averageGTError_180']=22
+# profiler_results['ABmax_180']=23
+# profiler_results['GTmax_180']=24
+
+
+
+
+
+
+
+
 
 #From Danis Blais' catphan analysis program
 mode_command = False
@@ -241,7 +275,7 @@ if 'FILE' in vars() or 'FILE' in globals():
 else:
     # le programme a ete lance en dehors de QATrack+
     if len(sys.argv) < 2:
-        print 'SVP specifiez en argument le nom du fichier Excel'
+        print 'SVP specifiez en argument le nom du fichier'
         quit()
     else:
         filename = str(sys.argv[1])
@@ -262,11 +296,11 @@ else:
 	#result = profiler_stat_6mv['homAB']
 	#result = profiler_stat_6mv['homGT']
 	#result = profiler_stat_6mv['maxGT']		
-#Create a python dictionary with the results from the analysis function to populate qatrack results.
-profiler_results = dict()
+
 
 
 #Define reference file
+
 #ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6MV.txt'
 #ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10MV.txt'
 #ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref18MV.txt'
@@ -285,15 +319,51 @@ profiler_results = dict()
 #ref_file = 'IX_ref23MV.txt'
 
 
+#if profilerSN.contains('008'):
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6MV.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10MV.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref18MV.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6FFF.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10FFF.txt'
+	#ref_file = 'VERSA_ref6MEV.txt'
+	#ref_file = 'VERSA_ref9MEV.txt'
+	#ref_file = 'VERSA_ref12MEV.txt'
+	#ref_file = 'VERSA_ref15MEV.txt'
+
+	#ref_file = 'EDGE_ref6MV.txt'
+	#ref_file = 'EDGE_ref6FFF.txt'
+	#ref_file = 'EDGE_ref10FFF.txt'
+
+	#ref_file = 'IX_ref6MV.txt'
+	#ref_file = 'IX_ref23MV.txt'
+
+	
+#if profilerSN.contains('012'):
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6MV.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10MV.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref18MV.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6FFF.txt'
+	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10FFF.txt'
+	#ref_file = 'VERSA_ref6MEV.txt'
+	#ref_file = 'VERSA_ref9MEV.txt'
+	#ref_file = 'VERSA_ref12MEV.txt'
+	#ref_file = 'VERSA_ref15MEV.txt'
+
+	#ref_file = 'EDGE_ref6MV.txt'
+	#ref_file = 'EDGE_ref6FFF.txt'
+	#ref_file = 'EDGE_ref10FFF.txt'
+
+	#ref_file = 'IX_ref6MV.txt'
+	#ref_file = 'IX_ref23MV.txt'
+
+
 #uncomment the analysis that you wish to perform:
 
 #For static analysis:
 #[profiler_results['symAB'], profiler_results['homAB'], profiler_results['symGT'], profiler_results['homGT'], profiler_results['maxAB'], profiler_results['maxGT'], profiler_results['meanAB'], profiler_results['meanGT']] = analyzeStatic(filename, ref_file)
 
 #For arc analysis:
-#[profiler_results['overallAvgAB'], profiler_results['overallAvgGT'], profiler_results['overallABmaximum'], profiler_results['overallGTmaximum'], profiler_results['averageABError_neg180'], profiler_results['averageGTError_neg180'], profiler_results['ABmax_neg180'], profiler_results['GTmax_neg180'], profiler_results['averageABError_neg90'], profiler_results['averageGTError_neg90'], profiler_results['ABmax_neg90'], profiler_results['GTmax_neg90'], profiler_results['averageABError_0'], profiler_results['averageGTError_0'], profiler_results['ABmax_0'], profiler_results['GTmax_0'],profiler_results['averageABError_90'], profiler_results['averageGTError_90'], profiler_results['ABmax_90'], profiler_results['GTmax_90'], profiler_results['averageABError_180'], profiler_results['averageGTError_180'], profiler_results['ABmax_180'], profiler_results['GTmax_180'] = analyzeArc(filename, ref_file)
-
-
+#[profiler_results['overallAvgAB'], profiler_results['overallAvgGT'], profiler_results['overallABmaximum'], profiler_results['overallGTmaximum'], profiler_results['averageABError_neg180'], profiler_results['averageGTError_neg180'], profiler_results['ABmax_neg180'], profiler_results['GTmax_neg180'], profiler_results['averageABError_neg90'], profiler_results['averageGTError_neg90'], profiler_results['ABmax_neg90'], profiler_results['GTmax_neg90'], profiler_results['averageABError_0'], profiler_results['averageGTError_0'], profiler_results['ABmax_0'], profiler_results['GTmax_0'],profiler_results['averageABError_90'], profiler_results['averageGTError_90'], profiler_results['ABmax_90'], profiler_results['GTmax_90'], profiler_results['averageABError_180'], profiler_results['averageGTError_180'], profiler_results['ABmax_180'], profiler_results['GTmax_180']] = analyzeArc(filename, ref_file)
 
 
 
