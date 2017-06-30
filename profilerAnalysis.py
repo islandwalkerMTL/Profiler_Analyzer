@@ -39,12 +39,12 @@ def extractArcFrame(filename,frameNum):
 		if 'Frames:' in arc_data[j]:
 			for k in range(j+1+int(frameNum),j+2+int(frameNum)):
 				for col in range(3,66):
-					AB_Frame.append(float(arc_data[k].split()[col])) #get the AB columns
+					AB_Frame.append(float(arc_data[k].split()[col].replace(',','.'))) #get the AB columns
 					
 					
 					
 				for col in range(66,131):
-					GT_Frame.append(float(arc_data[k].split()[col]))
+					GT_Frame.append(float(arc_data[k].split()[col].replace(',','.')))
 			
 			
 			return AB_Frame, GT_Frame
@@ -124,29 +124,29 @@ def load_profilerFile(filename):
 		
 	#find AB flatness
 		if 'X Axis Analysis' in profiler_data[j]:
-			ABflatness = float(profiler_data[j+7].split('perc')[1])
-			ABsymmetry = float(profiler_data[j+8].split('perc')[1])
+			ABflatness = float((profiler_data[j+7].split('perc')[1]).replace(',', '.'))
+			ABsymmetry = float((profiler_data[j+8].split('perc')[1]).replace(',', '.'))
 
 		
 		
 	#find AB data
 		if 'Detector ID	X Axis' in profiler_data[j]:
 			for k in range(1,64):
-				ABdist.append(float(profiler_data[j+k].split()[0]))
-				ABdata.append(float(profiler_data[j+k].split()[1]))
+				ABdist.append(float(profiler_data[j+k].split()[0].replace(',', '.')))
+				ABdata.append(float(profiler_data[j+k].split()[1].replace(',', '.')))
 			
 			
 	#find GT data
 	
 		if 'Y Axis Analysis' in profiler_data[j]:
-			GTflatness = float(profiler_data[j+7].split('perc')[1])
-			GTsymmetry = float(profiler_data[j+8].split('perc')[1])
+			GTflatness = float((profiler_data[j+7].split('perc')[1].replace(',', '.')))
+			GTsymmetry = float((profiler_data[j+8].split('perc')[1].replace(',', '.')))
 	
 	for j in range(0,len(profiler_data)-1):
 		if 'Detector ID	Y Axis' in profiler_data[j]:
 			for k in range(1,66):
-				GTdist.append(float(profiler_data[j+k].split()[0]))
-				GTdata.append(float(profiler_data[j+k].split()[1]))
+				GTdist.append(float((profiler_data[j+k].split()[0]).replace(',', '.')))
+				GTdata.append(float((profiler_data[j+k].split()[1]).replace(',', '.')))
 	
     return 	ABdist, ABdata, GTdist, GTdata, ABflatness, ABsymmetry, GTflatness, GTsymmetry
 
@@ -319,49 +319,11 @@ else:
 #ref_file = 'IX_ref23MV.txt'
 
 
-#if profilerSN.contains('008'):
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6MV.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10MV.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref18MV.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6FFF.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10FFF.txt'
-	#ref_file = 'VERSA_ref6MEV.txt'
-	#ref_file = 'VERSA_ref9MEV.txt'
-	#ref_file = 'VERSA_ref12MEV.txt'
-	#ref_file = 'VERSA_ref15MEV.txt'
-
-	#ref_file = 'EDGE_ref6MV.txt'
-	#ref_file = 'EDGE_ref6FFF.txt'
-	#ref_file = 'EDGE_ref10FFF.txt'
-
-	#ref_file = 'IX_ref6MV.txt'
-	#ref_file = 'IX_ref23MV.txt'
-
-	
-#if profilerSN.contains('012'):
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6MV.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10MV.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref18MV.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref6FFF.txt'
-	#ref_file = '/chum/dsp/Radio-oncologie/commun/Physique' + ' ' + 'radio-onco/QAtrack/References/Profiler/VERSA_ref10FFF.txt'
-	#ref_file = 'VERSA_ref6MEV.txt'
-	#ref_file = 'VERSA_ref9MEV.txt'
-	#ref_file = 'VERSA_ref12MEV.txt'
-	#ref_file = 'VERSA_ref15MEV.txt'
-
-	#ref_file = 'EDGE_ref6MV.txt'
-	#ref_file = 'EDGE_ref6FFF.txt'
-	#ref_file = 'EDGE_ref10FFF.txt'
-
-	#ref_file = 'IX_ref6MV.txt'
-	#ref_file = 'IX_ref23MV.txt'
-
 
 #uncomment the analysis that you wish to perform:
 
 #For static analysis:
 #[profiler_results['symAB'], profiler_results['homAB'], profiler_results['symGT'], profiler_results['homGT'], profiler_results['maxAB'], profiler_results['maxGT'], profiler_results['meanAB'], profiler_results['meanGT']] = analyzeStatic(filename, ref_file)
-
 #For arc analysis:
 #[profiler_results['overallAvgAB'], profiler_results['overallAvgGT'], profiler_results['overallABmaximum'], profiler_results['overallGTmaximum'], profiler_results['averageABError_neg180'], profiler_results['averageGTError_neg180'], profiler_results['ABmax_neg180'], profiler_results['GTmax_neg180'], profiler_results['averageABError_neg90'], profiler_results['averageGTError_neg90'], profiler_results['ABmax_neg90'], profiler_results['GTmax_neg90'], profiler_results['averageABError_0'], profiler_results['averageGTError_0'], profiler_results['ABmax_0'], profiler_results['GTmax_0'],profiler_results['averageABError_90'], profiler_results['averageGTError_90'], profiler_results['ABmax_90'], profiler_results['GTmax_90'], profiler_results['averageABError_180'], profiler_results['averageGTError_180'], profiler_results['ABmax_180'], profiler_results['GTmax_180']] = analyzeArc(filename, ref_file)
 
