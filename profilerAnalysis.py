@@ -39,8 +39,7 @@ def getNumFrames(filename):
 # frameNum starts at 1.
 def extractArcFrame(filename,frameNum):
     with open(filename,"r") as f:
-        arc_data = f.read().splitlines()
-    
+        arc_data = f.read().splitlines()    
     AB_Frame = []
     GT_Frame = []
     for j in range(0,len(arc_data)-1):
@@ -49,14 +48,9 @@ def extractArcFrame(filename,frameNum):
                 for col in range(3,66):
                     AB_Frame.append(float(arc_data[k].split()[col].
                                     replace(',','.'))) #get the AB columns
-                    
-                    
-                    
                 for col in range(66,131):
                     GT_Frame.append(
                     float(arc_data[k].split()[col].replace(',','.')))
-            
-            
             return AB_Frame, GT_Frame
             
 #This functions analyzes
@@ -79,7 +73,6 @@ def analyzeArc(filename,referencefilename, particletype):
     #The frame that has the max avg error in AB (to be converted to an angle):
     frameABavg_max = 0    
     
-    
     if particletype.upper() == 'PHOTON':
         startAngle = -180 #bipolar (photon arc)
         stopAngle = 180 #bipolar (photon arc)        
@@ -87,18 +80,11 @@ def analyzeArc(filename,referencefilename, particletype):
     elif particletype.upper() == 'ELECTRON':
         startAngle = -120 #bipolar (electron arc)
         stopAngle = 120 #bipolar (electron arc)
-
         
     else:
         print ('particletype has not been correctly defined. Correct '
         'options are (PHOTON) or (ELECTRON)')
         quit()
-        
-    
-    
-
-
-    
     
     # Threshold to account for profiler noise and dropped counts (%)
     # If the error for a frame is greather than 'threshold' the following
@@ -152,8 +138,6 @@ def analyzeArc(filename,referencefilename, particletype):
     angleABavg_max, overallGT_avg_maximum, angleGTavg_max, numSkippedFrames]
     return analyzeArc_return
 
-
-
 #### Static and general analysis functions ####     
 # Load a profiler file and split it in AB and GT. 
 # returns AB coordinates, AB data, GT coordinates, GT data,
@@ -164,17 +148,11 @@ def load_profilerFile(filename):
     with open(filename,"r") as f:
         profiler_data = f.read().splitlines()
         
-        
-        
     #declare data variables
     ABdist = []
     ABdata = []
     GTdist = []
     GTdata = []
-
-
-    
-    
     
     for j in range(0,len(profiler_data)-1):
       #  print profiler_data[j]
@@ -186,8 +164,6 @@ def load_profilerFile(filename):
             ABsymmetry = float(
             (profiler_data[j+8].split('perc')[1]).replace(',', '.'))
 
-        
-        
     #find AB data
         if 'DetectorIDXAxis' in re.sub('[\s+]', '', profiler_data[j]):
             for k in range(1,64):
@@ -195,7 +171,6 @@ def load_profilerFile(filename):
                 profiler_data[j+k].split()[0].replace(',', '.')))
                 ABdata.append(float(
                 profiler_data[j+k].split()[1].replace(',', '.')))
-            
             
     #find GT data
     
@@ -249,12 +224,7 @@ def caxcorrect(x0, y0):
     f_caxcorrected = interpolate.interp1d(xNEW,y0,fill_value="extrapolate")
     y_caxcorrected = f_caxcorrected(x0)
     
-    
-    
-    
     return y_caxcorrected
-    
-    
 
 #Computes average and maximum errors within +-10 cm of 
 #central axis in AB and GT directions
@@ -301,9 +271,6 @@ def computeError(ABdata,GTdata, AB_refData, GT_refData,particletype):
         ABpoints+=1
         
     
-        
-    
-    
     for datapos in range(int(GTstart),int(GTstop)):
         GTdifference = 100*abs(float(GTdata[datapos]) - float(
         GT_refData[datapos]))/float(GT_refData[datapos])
@@ -313,20 +280,13 @@ def computeError(ABdata,GTdata, AB_refData, GT_refData,particletype):
             GTmax = GTdifference
         
         GTpoints+=1
-    
-    
         
     averageABError = ABdiffsum/ABpoints
     averageGTError = GTdiffsum/GTpoints
     return averageABError, averageGTError, ABmax, GTmax
 
-    
-    
 
 def analyzeStatic(fname, ref_file,particletype):
-       
-
-
     #Load the reference file and file to be analyzed 
     [AB_refDist, AB_refData, GT_refDist, GT_refData,
         ABflatness_ref, ABsymmetry_ref, GTflatness_ref,
@@ -348,8 +308,6 @@ def analyzeStatic(fname, ref_file,particletype):
     
     return static_return
     
-
-
 
 #Create a python dictionary with the results from the analysis
 #function to populate qatrack results.
@@ -397,14 +355,6 @@ profiler_results = dict()
 # profiler_results['averageGTError_180']=22
 # profiler_results['ABmax_180']=23
 # profiler_results['GTmax_180']=24
-
-
-
-
-
-
-
-
 
 #From Danis Blais' catphan analysis program
 mode_command = False
